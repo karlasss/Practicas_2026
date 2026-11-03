@@ -1,0 +1,146 @@
+
+\documentclass[11pt,a4paper]{article}
+
+% PAQUETES
+\usepackage[margin=1.7cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{parskip}
+
+% PALETA DE COLORES ROSA
+\definecolor{rosa}{HTML}{E88AB5}
+\definecolor{rosaoscuro}{HTML}{B94D80}
+\definecolor{rosaclaro}{HTML}{FCE8F1}
+\definecolor{texto}{HTML}{352536}
+
+% ENLACES
+\hypersetup{
+    colorlinks=true,
+    urlcolor=rosaoscuro
+}
+
+% FORMATO GENERAL
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\pagestyle{empty}
+\color{texto}
+
+% TITULOS
+\titleformat{\section}
+{\large\bfseries\color{rosaoscuro}}
+{}{0em}{}[\color{rosa}\titlerule]
+
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+
+\setlist[itemize]{
+    leftmargin=18pt,
+    nosep,
+    label=\textcolor{rosa}{\textbullet}
+}
+
+\begin{document}
+
+% ENCABEZADO
+\begin{center}
+    {\Huge\bfseries\textcolor{rosaoscuro}{
+    Karla Fabiola Patal Sincal}}\\[5pt]
+
+    {\large\textcolor{rosa}{Currículum Vitae}}\\[8pt]
+
+    \textcolor{rosaoscuro}{Guatemala, Guatemala}\\
+    49038062 \quad
+    \href{mailto:karlapatal18@gmail.com}
+    {karlapatal18@gmail.com}
+\end{center}
+
+\vspace{3pt}
+\hrule
+\vspace{5pt}
+
+% PERFIL
+\section*{Perfil personal}
+
+Estudiante de Bachillerato Industrial y Perito con
+Orientación en Computación, interesada en la tecnología,
+el desarrollo de software y las bases de datos.
+Me caracterizo por ser una persona responsable,
+organizada, con capacidad para trabajar en equipo
+y disposición para aprender nuevos conocimientos.
+
+% EDUCACION
+\section*{Formación académica}
+
+\textbf{Instituto Emiliani Somascos}
+\hfill \textcolor{rosaoscuro}{2025 -- Actualidad}
+
+Bachillerato Industrial y Perito con Orientación
+en Computación.
+
+% CONOCIMIENTOS
+\section*{Conocimientos técnicos}
+
+\begin{itemize}
+    \item Lenguajes de programación: Java, Kotlin y Python.
+    \item Desarrollo web: HTML, CSS y JavaScript.
+    \item Bases de datos: MySQL.
+    \item Inglés: Nivel básico.
+\end{itemize}
+
+% PROYECTOS
+\section*{Proyectos académicos}
+
+\textbf{\textcolor{rosaoscuro}{
+GIT \& EAT -- Sistema de gestión de restaurante}}
+
+Participación en el desarrollo de un sistema para la
+administración de un restaurante, incluyendo la gestión
+de usuarios, productos, menús y pedidos. Colaboración
+en el diseño de interfaces, organización de la base de
+datos y programación utilizando Java, Java Swing y MySQL.
+
+\vspace{5pt}
+
+\textbf{\textcolor{rosaoscuro}{
+Neo Jacket -- Plataforma de gestión financiera}}
+
+Participación en el desarrollo de una propuesta de
+plataforma digital para centralizar información de
+diferentes cuentas bancarias. Incluye consulta de saldos,
+simulación de transferencias, conversión de monedas
+y supervisión de cuentas para menores de edad.
+Se utilizaron HTML, CSS, JavaScript y bases de datos SQL.
+
+\vspace{5pt}
+
+\textbf{\textcolor{rosaoscuro}{
+Eunoia -- Página web educativa}}
+
+Participación en el diseño y desarrollo de una página
+web educativa, enfocada en ofrecer recursos y material
+de estudio de manera organizada y accesible.
+Se utilizaron HTML, CSS y JavaScript.
+
+% EXPERIENCIA
+\section*{Experiencia laboral}
+
+Sin experiencia laboral formal. Interés en adquirir
+experiencia profesional y poner en práctica los
+conocimientos adquiridos durante mi formación académica.
+
+% HABILIDADES
+\section*{Habilidades personales}
+
+\begin{itemize}
+    \item Trabajo en equipo.
+    \item Responsabilidad y organización.
+    \item Resolución de problemas.
+    \item Adaptabilidad y aprendizaje continuo.
+    \item Creatividad e iniciativa.
+\end{itemize}
+
+\end{document}
