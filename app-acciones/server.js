@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const db = require('./db');
 const { obtenerTipoCambio } = require('./banguat');
+const { actualizarPrecio } = require('./twelve');
+const { iniciarTareaDiaria } = require('./tarea');
 
 const app = express();
 app.use(express.static('public'));
@@ -23,7 +25,7 @@ async function tipoCambioDeHoy() {
   }
 }
 
-// Precio: primero busca en MySQL; si no se consultó hoy, lo pide a Twelve Data
+/// Precio: primero busca en MySQL; si no se consultó hoy, lo pide a Twelve Data
 async function precioDeAccion(simbolo) {
   const [filas] = await db.query(
     `SELECT e.nombre, DATE_FORMAT(p.fecha, '%Y-%m-%d') AS fecha, p.precio_cierre
@@ -35,21 +37,7 @@ async function precioDeAccion(simbolo) {
   if (filas.length > 0) {
     return { nombre: filas[0].nombre, fecha: filas[0].fecha, precio: Number(filas[0].precio_cierre), origen: 'base de datos' };
   }
-
-  const url = `https://api.twelvedata.com/quote?symbol=${encodeURIComponent(simbolo)}&apikey=${process.env.TWELVE_API_KEY}`;
-  const datos = await (await fetch(url)).json();
-  if (datos.status === 'error') throw new Error(datos.message);
-
-  await db.query(
-    'INSERT INTO empresas (simbolo, nombre) VALUES (?, ?) ON DUPLICATE KEY UPDATE nombre = VALUES(nombre)',
-    [simbolo, datos.name]
-  );
-  await db.query(
-    `INSERT INTO precios_diarios (simbolo, fecha, precio_cierre, actualizado) VALUES (?, ?, ?, CURDATE())
-     ON DUPLICATE KEY UPDATE precio_cierre = VALUES(precio_cierre), actualizado = CURDATE()`,
-    [simbolo, datos.datetime, datos.close]
-  );
-  return { nombre: datos.name, fecha: datos.datetime, precio: Number(datos.close), origen: 'Twelve Data' };
+  return actualizarPrecio(simbolo);
 }
 
 // Ruta que usa la página: precio en dólares y en quetzales
@@ -64,4 +52,7 @@ app.get('/api/accion/:simbolo', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Servidor en http://localhost:3000'));
+app.listen(3000, () => {
+  console.log('Servidor en http://localhost:3000');
+  iniciarTareaDiaria();
+});
