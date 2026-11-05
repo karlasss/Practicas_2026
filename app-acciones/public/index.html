@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>App de Acciones</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <main>
+    <h1>App de Acciones</h1>
+    <div class="buscador">
+      <input id="simbolo" type="text" placeholder="Escribe un símbolo, por ejemplo AAPL">
+      <button id="buscar">Buscar</button>
+    </div>
+    <p id="mensaje"></p>
+
+    <section id="resultado" class="tarjeta oculto">
+      <h2 id="nombre"></h2>
+      <p id="detalle" class="nota"></p>
+      <div class="precios">
+        <div><span>Dólares</span><strong id="usd"></strong></div>
+        <div><span>Quetzales</span><strong id="gtq"></strong></div>
+      </div>
+      <p id="cambio" class="nota"></p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
