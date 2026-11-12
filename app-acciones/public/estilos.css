@@ -1,0 +1,213 @@
+/* Paleta de colores */
+:root {
+  --rosa-fondo: #fff5f8;
+  --rosa-suave: #fde4ec;
+  --rosa-medio: #f7b6cb;
+  --rosa-fuerte: #e75480;
+  --rosa-oscuro: #c23b67;
+  --texto: #4a2c3a;
+  --texto-suave: #8a6475;
+  --blanco: #ffffff;
+  --verde: #2e9e7a;
+  --rojo: #d64545;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', system-ui, sans-serif;
+  background: linear-gradient(180deg, var(--rosa-suave) 0%, var(--rosa-fondo) 320px);
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+/* Encabezado y pestañas */
+.encabezado { text-align: center; padding: 40px 16px 8px; }
+.encabezado h1 { margin: 0; font-size: 34px; color: var(--rosa-oscuro); }
+.encabezado p { margin: 6px 0 0; color: var(--texto-suave); }
+
+.pestanas { display: flex; justify-content: center; gap: 8px; margin: 20px 0 24px; }
+.pestana {
+  border: none; background: var(--blanco); color: var(--texto-suave);
+  padding: 10px 26px; border-radius: 999px; font: inherit; font-weight: 500;
+  cursor: pointer; box-shadow: 0 2px 8px rgba(231, 84, 128, 0.12); transition: all 0.2s;
+}
+.pestana:hover { color: var(--rosa-fuerte); }
+.pestana.activa { background: var(--rosa-fuerte); color: var(--blanco); }
+
+/* Contenido */
+main { max-width: 900px; margin: 0 auto; padding: 0 16px 48px; }
+.tarjeta {
+  background: var(--blanco); border-radius: 20px; padding: 24px;
+  margin-bottom: 16px; box-shadow: 0 4px 20px rgba(231, 84, 128, 0.10);
+}
+
+/* Buscador y botones */
+.buscador { display: flex; gap: 10px; }
+.buscador input {
+  flex: 1; padding: 12px 18px; font: inherit; color: var(--texto);
+  border: 2px solid var(--rosa-suave); border-radius: 999px; outline: none; transition: border-color 0.2s;
+}
+.buscador input:focus { border-color: var(--rosa-medio); }
+.boton {
+  padding: 12px 26px; font: inherit; font-weight: 600; color: var(--blanco);
+  background: linear-gradient(135deg, #f48fb1, var(--rosa-fuerte));
+  border: none; border-radius: 999px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+}
+.boton:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(231, 84, 128, 0.3); }
+.mensaje { text-align: center; color: var(--rosa-oscuro); min-height: 1.4em; }
+
+/* Resultado de búsqueda */
+#resultado h2 { margin: 0 0 4px; }
+.precios { display: flex; gap: 16px; margin: 16px 0; }
+.precio { flex: 1; background: var(--rosa-fondo); border-radius: 16px; padding: 16px; text-align: center; }
+.precio span { display: block; font-size: 14px; color: var(--texto-suave); }
+.precio strong { font-size: 30px; color: var(--rosa-oscuro); }
+.nota { font-size: 13px; color: var(--texto-suave); margin: 0; }
+
+/* Comparar */
+.etiqueta { display: block; margin-bottom: 10px; font-weight: 500; }
+.opciones { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 16px; }
+.grupo { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  border: 2px solid var(--rosa-suave); background: var(--blanco); color: var(--texto-suave);
+  padding: 6px 14px; border-radius: 999px; font: inherit; font-size: 13px; cursor: pointer;
+}
+.chip.activa { background: var(--rosa-suave); border-color: var(--rosa-medio); color: var(--rosa-oscuro); font-weight: 600; }
+
+/* Tabla */
+.tabla-contenedor { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th {
+  text-align: left; color: var(--texto-suave); font-weight: 500;
+  padding: 10px; border-bottom: 2px solid var(--rosa-suave); white-space: nowrap;
+}
+td { padding: 12px 10px; border-bottom: 1px solid var(--rosa-fondo); white-space: nowrap; }
+.punto { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+.sube { color: var(--verde); font-weight: 600; }
+.baja { color: var(--rojo); font-weight: 600; }
+
+.oculto { display: none !important; }
+
+/* Celular */
+@media (max-width: 600px) {
+  .buscador, .precios { flex-direction: column; }
+}
+
+/* ===== Fase 5: sugerencias y ficha ===== */
+.campo-autocompletar { position: relative; flex: 1; }
+.campo-autocompletar input { width: 100%; }
+.sugerencias {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 10;
+  list-style: none; margin: 0; padding: 6px; background: var(--blanco);
+  border-radius: 16px; box-shadow: 0 8px 24px rgba(231, 84, 128, 0.18);
+}
+.sugerencias li { display: flex; gap: 10px; align-items: baseline; padding: 10px 12px; border-radius: 10px; cursor: pointer; }
+.sugerencias li:hover, .sugerencias li.seleccionada { background: var(--rosa-fondo); }
+.sugerencias b { color: var(--rosa-oscuro); min-width: 60px; }
+.sugerencias small { margin-left: auto; color: var(--texto-suave); font-size: 12px; }
+
+.ficha-encabezado { display: flex; align-items: center; gap: 14px; }
+.ficha-encabezado h2 { margin: 0; }
+.logo { width: 52px; height: 52px; border-radius: 14px; object-fit: contain; background: var(--rosa-fondo); padding: 6px; }
+.precio small { display: block; margin-top: 4px; }
+
+h3 { margin: 0 0 12px; font-size: 17px; color: var(--rosa-oscuro); }
+.titulo-tarjeta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+.titulo-tarjeta h3 { margin: 0; }
+
+.cuadricula { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-top: 12px; }
+.dato { background: var(--rosa-fondo); border-radius: 14px; padding: 12px 14px; }
+.dato span { display: block; font-size: 13px; color: var(--texto-suave); }
+.dato strong { display: block; font-size: 18px; margin: 2px 0; }
+.dato small { display: block; font-size: 11.5px; line-height: 1.35; color: var(--texto-suave); }
+
+.boton-secundario {
+  margin-top: 14px; padding: 8px 16px; font: inherit; font-size: 13px; font-weight: 500;
+  color: var(--rosa-oscuro); background: var(--rosa-suave); border: none; border-radius: 999px; cursor: pointer;
+}
+.boton-secundario:hover { background: var(--rosa-medio); }
+
+/* ===== Selector de empresas con etiquetas ===== */
+.selector {
+  flex: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  padding: 6px 8px; background: var(--blanco); cursor: text;
+  border: 2px solid var(--rosa-suave); border-radius: 24px; transition: border-color 0.2s;
+}
+.selector:focus-within { border-color: var(--rosa-medio); }
+.selector .campo-autocompletar { flex: 1; min-width: 180px; }
+.buscador .selector input {
+  width: 100%; padding: 6px 8px; border: none; border-radius: 0;
+  background: transparent; font: inherit; color: var(--texto); outline: none;
+}
+.etiquetas { display: contents; }
+.etiqueta-accion {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 6px 4px 12px;
+  border-radius: 999px; background: var(--rosa-suave); color: var(--rosa-oscuro); font-size: 13px; font-weight: 600;
+}
+.etiqueta-accion button {
+  width: 20px; height: 20px; border: none; border-radius: 50%; line-height: 1;
+  background: var(--blanco); color: var(--rosa-oscuro); cursor: pointer;
+}
+.etiqueta-accion button:hover { background: var(--rosa-medio); color: var(--blanco); }
+
+/* ===== Fase 6: Ayúdame a decidir ===== */
+.perfiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 22px; }
+.perfil {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px;
+  text-align: left; font: inherit; color: var(--texto); background: var(--rosa-fondo);
+  border: 2px solid transparent; border-radius: 16px; cursor: pointer; transition: all 0.2s;
+}
+.perfil span { font-size: 24px; }
+.perfil small { font-size: 12px; line-height: 1.35; color: var(--texto-suave); }
+.perfil:hover { border-color: var(--rosa-suave); }
+.perfil.activa { background: var(--blanco); border-color: var(--rosa-fuerte); box-shadow: 0 4px 14px rgba(231, 84, 128, 0.18); }
+
+.como summary { cursor: pointer; font-weight: 500; color: var(--rosa-oscuro); }
+.como p { margin: 10px 0 0; font-size: 14px; line-height: 1.5; color: var(--texto-suave); }
+
+.resultado-encabezado { display: flex; align-items: center; gap: 14px; }
+.medalla { font-size: 30px; }
+.resultado-nombre { flex: 1; }
+.resultado-nombre h2 { margin: 0; font-size: 20px; }
+.resultado-nombre small { font-size: 14px; font-weight: 400; color: var(--texto-suave); }
+
+/* Anillo con el puntaje: se llena según --valor (0 a 100) */
+.anillo {
+  --valor: 0; flex-shrink: 0; width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center;
+  background: conic-gradient(var(--rosa-fuerte) calc(var(--valor) * 1%), var(--rosa-suave) 0);
+}
+.anillo span {
+  width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--blanco); font-size: 20px; font-weight: 600; color: var(--rosa-oscuro);
+}
+
+.veredicto { display: inline-block; margin: 14px 0 6px; padding: 6px 14px; border-radius: 999px; font-size: 14px; font-weight: 600; }
+.veredicto.alto { background: #e3f5ee; color: var(--verde); }
+.veredicto.medio { background: #fdf3dc; color: #a87400; }
+.veredicto.bajo { background: #fde8e8; color: var(--rojo); }
+
+.criterios { display: grid; gap: 10px; margin: 12px 0; }
+.criterio { display: grid; grid-template-columns: minmax(150px, 1fr) 2fr 34px; align-items: center; gap: 12px; }
+.criterio-nombre { font-size: 14px; font-weight: 500; }
+.criterio-nombre small { display: block; font-size: 12px; font-weight: 400; color: var(--texto-suave); }
+.barra { height: 10px; border-radius: 999px; background: var(--rosa-suave); overflow: hidden; }
+.barra div { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #f48fb1, var(--rosa-fuerte)); }
+.criterio b { text-align: right; color: var(--rosa-oscuro); }
+
+.puntos-clave { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.fortaleza { color: var(--verde); }
+.debilidad { color: var(--rojo); }
+
+/* Avisos */
+.aviso {
+  margin-top: 8px; padding: 14px 18px; border-radius: 16px; font-size: 13px; line-height: 1.5;
+  background: #fff8e6; border: 1px solid #f5dfa3; color: #7a5a00;
+}
+.pie { max-width: 900px; margin: 0 auto; padding: 0 16px 32px; text-align: center; font-size: 12px; color: var(--texto-suave); }
+
+@media (max-width: 600px) {
+  .criterio { grid-template-columns: 1fr 34px; }
+  .criterio .barra { grid-column: 1 / -1; grid-row: 2; }
+}

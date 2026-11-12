@@ -3,28 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>App de Acciones</title>
+  <title>Mis Acciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-  <main>
-    <h1>App de Acciones</h1>
-    <div class="buscador">
-      <input id="simbolo" type="text" placeholder="Escribe un símbolo, por ejemplo AAPL">
-      <button id="buscar">Buscar</button>
-    </div>
-    <p id="mensaje"></p>
+  <header class="encabezado">
+    <h1>Mis Acciones</h1>
+    <p>Consulta, compara y decide con calma</p>
+  </header>
 
-    <section id="resultado" class="tarjeta oculto">
-      <h2 id="nombre"></h2>
-      <p id="detalle" class="nota"></p>
-      <div class="precios">
-        <div><span>Dólares</span><strong id="usd"></strong></div>
-        <div><span>Quetzales</span><strong id="gtq"></strong></div>
+  <nav class="pestanas">
+    <button class="pestana activa" data-seccion="buscar">Buscar</button>
+    <button class="pestana" data-seccion="comparar">Comparar</button>
+    <button class="pestana" data-seccion="decidir">Ayúdame a decidir</button>
+  </nav>
+
+  <main>
+    <!-- Pestaña Buscar -->
+    <section id="buscar" class="seccion">
+      <div class="tarjeta">
+        <div class="buscador">
+          <div class="campo-autocompletar">
+            <input id="simbolo" type="text" placeholder="Escribe una empresa o símbolo, por ejemplo Apple o AAPL" autocomplete="off">
+            <ul id="sugerencias" class="sugerencias oculto"></ul>
+          </div>
+          <button id="btn-buscar" class="boton">Buscar</button>
+        </div>
       </div>
-      <p id="cambio" class="nota"></p>
+      <p id="mensaje" class="mensaje"></p>
+
+      <div id="ficha" class="oculto">
+        <!-- Encabezado y precio -->
+        <article class="tarjeta">
+          <div class="ficha-encabezado">
+            <img id="logo" class="logo oculto" alt="">
+            <div>
+              <h2 id="nombre"></h2>
+              <p id="detalle" class="nota"></p>
+            </div>
+          </div>
+          <div class="precios">
+            <div class="precio"><span>Dólares</span><strong id="usd"></strong><small id="cambio-dia"></small></div>
+            <div class="precio"><span>Quetzales</span><strong id="gtq"></strong></div>
+          </div>
+          <p id="cambio" class="nota"></p>
+        </article>
+
+        <!-- Gráfica -->
+        <article class="tarjeta">
+          <div class="titulo-tarjeta">
+            <h3>Historial de precio</h3>
+            <div class="grupo" id="periodos-ficha">
+              <button class="chip" data-periodo="1M">1 mes</button>
+              <button class="chip activa" data-periodo="6M">6 meses</button>
+              <button class="chip" data-periodo="1A">1 año</button>
+              <button class="chip" data-periodo="5A">5 años</button>
+            </div>
+          </div>
+          <canvas id="grafica-ficha"></canvas>
+          <button id="btn-csv" class="boton-secundario">⬇ Descargar precios de cierre (CSV)</button>
+        </article>
+
+        <!-- Cierre del día -->
+        <article class="tarjeta">
+          <h3 id="titulo-cierre">Cierre del día</h3>
+          <div id="cierre" class="cuadricula"></div>
+        </article>
+
+        <!-- Fundamentales -->
+        <article class="tarjeta">
+          <h3>Datos fundamentales</h3>
+          <p class="nota">Fuente: Finnhub · Se actualizan cada semana</p>
+          <div id="fundamentales" class="cuadricula"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Pestaña Comparar -->
+    <section id="comparar" class="seccion oculto">
+      <div class="tarjeta">
+        <label class="etiqueta">Acciones a comparar (hasta 10)</label>
+        <div class="buscador">
+          <div id="selector-comparar"></div>
+          <button id="btn-comparar" class="boton">Comparar</button>
+        </div>
+        <div class="opciones">
+          <div class="grupo" id="periodos">
+            <button class="chip" data-periodo="1D">1 día</button>
+            <button class="chip" data-periodo="1M">1 mes</button>
+            <button class="chip activa" data-periodo="6M">6 meses</button>
+            <button class="chip" data-periodo="1A">1 año</button>
+            <button class="chip" data-periodo="5A">5 años</button>
+          </div>
+          <div class="grupo" id="vistas">
+            <button class="chip activa" data-vista="rendimiento">Rendimiento %</button>
+            <button class="chip" data-vista="precio">Precio USD</button>
+          </div>
+        </div>
+      </div>
+      <p id="mensaje-comparar" class="mensaje"></p>
+
+      <div id="zona-comparacion" class="oculto">
+        <div class="tarjeta">
+          <canvas id="grafica"></canvas>
+        </div>
+        <div class="tarjeta tabla-contenedor">
+          <table id="tabla">
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Precio inicial</th>
+                <th>Precio actual</th>
+                <th>En quetzales</th>
+                <th>Rendimiento</th>
+                <th>Máximo</th>
+                <th>Mínimo</th>
+                <th>Acciones negociadas</th>
+                <th>Monto negociado</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pestaña Ayúdame a decidir -->
+    <section id="decidir" class="seccion oculto">
+      <div class="tarjeta">
+        <h3>1. ¿Qué buscas al invertir?</h3>
+        <div class="perfiles" id="perfiles">
+          <button class="perfil" data-perfil="conservador">
+            <span>🛡️</span><b>Poco riesgo</b><small>Empresas estables, con poca deuda</small>
+          </button>
+          <button class="perfil" data-perfil="dividendos">
+            <span>💵</span><b>Dividendos</b><small>Que me paguen ganancias cada año</small>
+          </button>
+          <button class="perfil" data-perfil="crecimiento">
+            <span>🚀</span><b>Crecimiento</b><small>Empresas que crecen rápido, aunque sean más arriesgadas</small>
+          </button>
+          <button class="perfil activa" data-perfil="equilibrado">
+            <span>⚖️</span><b>Equilibrado</b><small>Un poco de todo</small>
+          </button>
+        </div>
+
+        <h3>2. ¿Qué empresas estás considerando?</h3>
+        <div class="buscador">
+          <div id="selector-decidir"></div>
+          <button id="btn-decidir" class="boton">Analizar</button>
+        </div>
+      </div>
+
+      <p id="mensaje-decidir" class="mensaje"></p>
+      <div id="resultados-decidir"></div>
+
+      <div class="aviso">
+        ⚠️ Este puntaje es una guía educativa basada en datos públicos y reglas simples. No es una recomendación
+        de compra ni asesoría financiera. Antes de invertir, considera tu situación personal y consulta con un
+        asesor financiero autorizado.
+      </div>
     </section>
   </main>
+
+  <footer class="pie">
+    🌸 Mis Acciones es una herramienta informativa y educativa, no es asesoría financiera.
+    Los datos pueden tener retrasos o errores. Fuentes: Twelve Data, Finnhub y Banco de Guatemala.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

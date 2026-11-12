@@ -2,6 +2,8 @@ const cron = require('node-cron');
 const db = require('./db');
 const { obtenerTipoCambio } = require('./banguat');
 const { actualizarPrecio } = require('./twelve');
+const { actualizarFundamentales } = require('./finnhub');
+const { cargarCatalogo } = require('./catalogo');
 
 const esperar = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -41,6 +43,21 @@ async function actualizarPrecios() {
   }
 }
 
+// Fundamentales: cambian poco, se actualizan los sábados
+async function actualizarTodosLosFundamentales() {
+  const [empresas] = await db.query('SELECT simbolo FROM empresas');
+  console.log(`Actualizando fundamentales de ${empresas.length} empresas...`);
+  for (const { simbolo } of empresas) {
+    try {
+      await actualizarFundamentales(simbolo);
+      console.log(`${simbolo}: fundamentales al día`);
+    } catch (error) {
+      console.log(`${simbolo}: error en fundamentales - ${error.message}`);
+    }
+    await esperar(2500); // 2 consultas por empresa; así no pasamos el límite de Finnhub
+  }
+}
+
 // La tarea completa
 async function ejecutarActualizacion() {
   console.log(`[${new Date().toLocaleString('es-GT')}] Iniciando actualización diaria`);
@@ -49,16 +66,24 @@ async function ejecutarActualizacion() {
   const dia = new Date().getDay(); // 0 = domingo, 6 = sábado
   if (dia === 0 || dia === 6) {
     console.log('Fin de semana: la bolsa está cerrada, no se actualizan precios.');
+    if (dia === 6) await actualizarTodosLosFundamentales();
   } else {
     await actualizarPrecios();
   }
   console.log('Actualización terminada');
 }
 
-// Programa la tarea todos los días a las 5:00 p.m., hora de Guatemala
+// Programa todas las tareas automáticas
 function iniciarTareaDiaria() {
+  // Todos los días a las 5:00 p.m.: tipo de cambio y precios (y fundamentales los sábados)
   cron.schedule('0 17 * * *', ejecutarActualizacion, { timezone: 'America/Guatemala' });
-  console.log('Tarea diaria programada: 5:00 p.m. (hora de Guatemala)');
+
+  // Día 1 de cada mes a las 6:00 a.m.: actualiza la lista de empresas del buscador
+  cron.schedule('0 6 1 * *', () => {
+    cargarCatalogo().catch((error) => console.log('Catálogo:', error.message));
+  }, { timezone: 'America/Guatemala' });
+
+  console.log('Tareas programadas: precios 5:00 p.m., fundamentales los sábados, catálogo el día 1 de cada mes');
 }
 
 module.exports = { iniciarTareaDiaria, ejecutarActualizacion };
